@@ -1,21 +1,17 @@
-import { useState } from 'react'
+import { useState } from 'react';
 
-import './App.css'
-import RandomName from './components/RandomName';
 
-function App() {
-  const [count, setCount] = useState(0)
+const RandomName = () => {
   const [list, setList] = useState('')
 
   
-  const onPressHandler = (event) => {
-    event.preventDefault()
-    const value = event.target.list.value
-    console.log('value: ', value)
-    
-    
+  const onPressHandler = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const value = (event.target as HTMLFormElement).list.value;
+    console.log('value: ', value);
+
     setList(value);
-    console.log('lists: ', list)
+    console.log('lists: ', list);
 
     if(list){
 
@@ -26,10 +22,7 @@ function App() {
       console.log('randomIndex', randomIndex);
 
     }
-
   }
-  
-  
   return (
     <>
 
@@ -52,5 +45,5 @@ function App() {
     </>
   )
 }
+export default RandomName
 
-export default App

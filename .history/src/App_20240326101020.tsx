@@ -41,6 +41,7 @@ function App() {
         </p>
       </div>
       <div>
+        <RandomName />
         <form onSubmit={onPressHandler}>
           <input name='list' />
           <button
