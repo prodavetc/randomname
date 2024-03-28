@@ -1,29 +1,31 @@
 import { useState } from 'react';
 import ListNames from './ListNames';
 import Winner from './Winner';
+import Footer from './Footer';
     
     
     const RandomName = () => {
       const [list, setList] = useState('')
       const [win, setWin] = useState('')
-
+      const [loading, setLoading] = useState(false)
 
       const winner = (list: string) => {
+        setLoading(true)
         if(list){
-          let myArray = list
-          const win =  myArray[Math.floor(Math.random() * myArray.length)];
-          setWin(win)
+          setTimeout(() => {   
+            let myArray = list
+            const win =  myArray[Math.floor(Math.random() * myArray.length)];
+            setWin(win)
+            setLoading(false)
+          }, 3000);
 
         }
       }
     
-      
       const onPressHandler = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const value = (event.target as HTMLFormElement).list.value;
-
         setList(value.split(", "));
-
       }
     
     
@@ -35,7 +37,12 @@ import Winner from './Winner';
             lista={list}
             />
           <div className="float-none"></div>
-          { win && <Winner winName={win} />}
+          { !loading && win && <Winner winName={win} />}
+          { loading && 
+            <div className="flex justify-center items-center h-12 pb-2">
+              <div className="rounded-full h-1/2 w-20 bg-violet-800 animate-ping"></div>
+            </div>
+          }
           <div className="text-center">
             <form onSubmit={onPressHandler}>
               <input name='list' className="mr-4 w-200 border rounded-xl text-gray-800 focus:outline-none focus:border-indigo-300 pl-4 h-10" />
@@ -46,6 +53,9 @@ import Winner from './Winner';
               <button onClick={() => winner(list)} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
               >Get Winner</button>
           </div>
+         
+
+          <Footer />
         </>
       )
     }
