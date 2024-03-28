@@ -1,47 +1,54 @@
 import { useState } from 'react';
+import ListNames from './ListNames';
+import Winner from './Winner';
+    
+    
+    const RandomName = () => {
+      const [list, setList] = useState('')
+      const [win, setWin] = useState('')
 
 
-const RandomName = () => {
-  const [list, setList] = useState('')
+      const winner = (list: string) => {
+        if(list){
+          let myArray = list
+          const win =  myArray[Math.floor(Math.random() * myArray.length)];
+          setWin(win)
 
-  
-  const onPressHandler = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const value = (event.target as HTMLFormElement).list.value;
-    console.log('value: ', value);
-
-    setList(value);
-    console.log('lists: ', list);
-
-    if(list){
-
+        }
+      }
+    
       
-      let myArray = list.split(", ");
-      const randomIndex = myArray[Math.floor(Math.random() * myArray.length)];
+      const onPressHandler = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        const value = (event.target as HTMLFormElement).list.value;
 
-      console.log('randomIndex', randomIndex);
+        setList(value.split(", "));
 
+      }
+    
+    
+      return (
+        <>
+    
+          <h1 className="text-3xl font-bold underline text-center fade-in py-4">Random Name</h1>
+          <ListNames
+            lista={list}
+            />
+          <div className="float-none"></div>
+          { win && <Winner winName={win} />}
+          <div className="text-center">
+            <form onSubmit={onPressHandler}>
+              <input name='list' className="mr-4 w-200 border rounded-xl text-gray-800 focus:outline-none focus:border-indigo-300 pl-4 h-10" />
+              <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              >Send</button>
+            </form>
+            <br />
+              <button onClick={() => winner(list)} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              >Get Winner</button>
+          </div>
+        </>
+      )
     }
-  }
-  return (
-    <>
-
-      <h1 className="text-3xl font-bold underline text-center fade-in">Random Name</h1>
-      <div className="card text-center">
-       {list}
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <div className="text-center">
-        <form onSubmit={onPressHandler}>
-          <input name='list' className="mr-4 w-200 border rounded-xl text-gray-800 focus:outline-none focus:border-indigo-300 pl-4 h-10" />
-          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          >Send</button>
-        </form>
-      </div>
-    </>
-  )
-}
-export default RandomName
-
+    export default RandomName
+    
+    
