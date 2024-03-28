@@ -7,8 +7,7 @@ interface ListNamesProps {
 const ListNames = (lista: ListNamesProps) => {
 
   const listado = lista.lista;
-  console.log("🚀 ~ listado:", listado)
-  
+ 
 
   return (
     <div className="flex space-x-2 items-center justify-center w-full ">
