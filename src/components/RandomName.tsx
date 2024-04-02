@@ -1,15 +1,20 @@
-import { useState } from 'react';
+import { useContext, useMemo, useState } from 'react';
 import ListNames from './ListNames';
 import Winner from './Winner';
 import Footer from './Footer';
+import { StateContext } from '../hook/useContext/stateContext';
     
     
     const RandomName = () => {
-      const [list, setList] = useState('')
+      const userList = useContext(StateContext);
+
+      const [list, setList] = useState(userList)
+      const contextValue = useMemo(() => ({list, setList}), [list])
+
       const [win, setWin] = useState('')
       const [loading, setLoading] = useState(false)
 
-      const winner = (list: string) => {
+      const winner = (list: string | string[] | undefined) => {
         setLoading(true)
         if(list){
           setTimeout(() => {   
@@ -31,11 +36,9 @@ import Footer from './Footer';
     
       return (
         <>
-    
+            <StateContext.Provider value={contextValue}>
           <h1 className="text-3xl font-bold underline text-center fade-in py-4">Random Name</h1>
-          <ListNames
-            lista={list}
-            />
+          <ListNames />
           <div className="float-none"></div>
           { !loading && win && <Winner winName={win} />}
           { loading && 
@@ -45,17 +48,30 @@ import Footer from './Footer';
           }
           <div className="text-center">
             <form onSubmit={onPressHandler}>
-              <input name='list' className="mr-4 w-200 border rounded-xl text-gray-800 focus:outline-none focus:border-indigo-300 pl-4 h-10" />
+              <input 
+                name='list' 
+                className="
+                  mr-4 
+                  w-1/3 
+                  border 
+                  rounded-xl 
+                  text-gray-800 
+                  focus:outline-none 
+                  focus:border-indigo-300 
+                  pl-4 
+                  h-10" 
+                placeholder="Enter names separated by commas and space"
+                />
               <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
               >Send</button>
             </form>
             <br />
-              <button onClick={() => winner(list)} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              <button onClick={() => winner(list ?? [])} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
               >Get Winner</button>
           </div>
          
-
           <Footer />
+          </StateContext.Provider>
         </>
       )
     }
