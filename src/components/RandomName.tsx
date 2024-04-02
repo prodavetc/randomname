@@ -8,24 +8,22 @@ import { StateContext } from '../hook/useContext/stateContext';
     const RandomName = () => {
       const userList = useContext(StateContext);
 
-      const [list, setList] = useState(userList)
-      const contextValue = useMemo(() => ({list, setList}), [list])
+      const [list, setList] = useState<string[] | string | undefined>(userList?.list);
+      const contextValue = useMemo(() => ({ lenght: userList?.length || 0, list, setList }), [list]);
 
       const [win, setWin] = useState('')
       const [loading, setLoading] = useState(false)
 
-      const winner = (list: string | string[] | undefined) => {
-        setLoading(true)
-        if(list){
-          setTimeout(() => {   
-            let myArray = list
-            const win =  myArray[Math.floor(Math.random() * myArray.length)];
-            setWin(win)
-            setLoading(false)
+      const winner = () => {
+        setLoading(true);
+        if (list && Array.isArray(list)) {
+          setTimeout(() => {
+            const win = list[Math.floor(Math.random() * list.length)];
+            setWin(win);
+            setLoading(false);
           }, 3000);
-
         }
-      }
+      };
     
       const onPressHandler = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -66,7 +64,7 @@ import { StateContext } from '../hook/useContext/stateContext';
               >Send</button>
             </form>
             <br />
-              <button onClick={() => winner(list ?? [])} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              <button onClick={winner} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
               >Get Winner</button>
           </div>
          
