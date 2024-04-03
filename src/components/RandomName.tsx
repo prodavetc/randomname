@@ -17,8 +17,13 @@ import { StateContext } from '../hook/useContext/stateContext';
       const winner = () => {
         setLoading(true);
         if (list && Array.isArray(list)) {
-          setTimeout(() => {
+          setTimeout(() => {            
             const win = list[Math.floor(Math.random() * list.length)];
+            let indexWin = contextValue.list?.indexOf(win) ?? -1;
+
+            const newList = [...(contextValue.list as string[])];
+            newList.splice(indexWin, 1);
+            setList(newList);
             setWin(win);
             setLoading(false);
           }, 3000);
