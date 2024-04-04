@@ -7,6 +7,7 @@ import { StateContext } from '../hook/useContext/stateContext';
     
     const RandomName = () => {
       const userList = useContext(StateContext);
+      
 
       const [list, setList] = useState<string[] | string | undefined>(userList?.list);
       const contextValue = useMemo(() => ({ lenght: userList?.length || 0, list, setList }), [list]);
@@ -29,18 +30,20 @@ import { StateContext } from '../hook/useContext/stateContext';
           }, 3000);
         }
       };
+
+      const disabled = (!!contextValue.list?.length) ? false : true;
     
       const onPressHandler = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const value = (event.target as HTMLFormElement).list.value;
-        setList(value.split(", "));
+        value && setList(value.split(", "));
       }
     
     
       return (
         <>
             <StateContext.Provider value={contextValue}>
-          <h1 className="text-3xl font-bold underline text-center fade-in py-4">Random Name</h1>
+          <h1 className="text-3xl font-bold underline text-center fade-in py-4">Random Winner</h1>
           <ListNames />
           <div className="float-none"></div>
           { !loading && win && <Winner winName={win} />}
@@ -69,7 +72,7 @@ import { StateContext } from '../hook/useContext/stateContext';
               >Send</button>
             </form>
             <br />
-              <button onClick={winner} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              <button onClick={winner} disabled={disabled} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
               >Get Winner</button>
           </div>
          
