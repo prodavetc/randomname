@@ -10,7 +10,7 @@ const ListNames = () => {
  
   return (
     <div className="flex space-x-2 items-center justify-center w-full ">
-    <div className="card text-center justify-center pb-4">
+    <div className="card text-center justify-center pb-4 w-4/6">
        {
             Array.isArray(listado) && listado.map((value, key) => (
              <SingleName key={key} item={value} index={key} />
