@@ -47,7 +47,7 @@ import confetti from "canvas-confetti";
       const onPressHandler = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const value = (event.target as HTMLFormElement).list.value;
-        value && setList(value.split(", "));
+        value && setList(value.split(","));
       }
     
     
