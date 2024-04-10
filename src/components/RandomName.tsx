@@ -3,6 +3,7 @@ import ListNames from './ListNames';
 import Winner from './Winner';
 import Footer from './Footer';
 import { StateContext } from '../hook/useContext/stateContext';
+import confetti from "canvas-confetti";
     
     
     const RandomName = () => {
@@ -27,6 +28,16 @@ import { StateContext } from '../hook/useContext/stateContext';
             setList(newList);
             setWin(win);
             setLoading(false);
+            confetti({
+              zIndex: 999,
+              particleCount: 100,
+              spread: 160,
+              angle: -100,
+              origin: {
+                x: 0.5,
+                y: 0,
+              },
+            });
           }, 3000);
         }
       };
