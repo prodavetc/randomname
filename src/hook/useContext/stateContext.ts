@@ -1,6 +1,6 @@
 import { createContext } from 'react';
 
-export interface StateContextProps {
+export interface StateContextProps { 
   length?: number;
   list: string[] | string | undefined;
   setList: (value: string[] | string) => void;
