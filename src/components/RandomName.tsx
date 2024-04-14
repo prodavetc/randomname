@@ -1,73 +1,71 @@
-import { useContext, useMemo, useState } from 'react';
-import ListNames from './ListNames';
-import Winner from './Winner';
-import Footer from './Footer';
-import { StateContext } from '../hook/useContext/stateContext';
-import confetti from "canvas-confetti";
-    
-    
-    const RandomName = () => {
-      const userList = useContext(StateContext);
-      
+import {useContext, useMemo, useState} from 'react'
+import ListNames from './ListNames'
+import Winner from './Winner'
+import Footer from './Footer'
+import {StateContext} from '../hook/useContext/stateContext'
+// import confetti from "canvas-confetti";
+import {confetties, updateList} from '../utils'
 
-      const [list, setList] = useState<string[] | string | undefined>(userList?.list);
-      const contextValue = useMemo(() => ({ lenght: userList?.length || 0, list, setList }), [list]);
+const RandomName = () => {
+  const userList = useContext(StateContext)
 
-      const [win, setWin] = useState('')
-      const [loading, setLoading] = useState(false)
+  const [list, setList] = useState<string[] | string | undefined>(
+    userList?.list,
+  )
+  const contextValue = useMemo(
+    () => ({lenght: userList?.length || 0, list, setList}),
+    [list, userList?.length],
+  )
 
-      const winner = () => {
-        setLoading(true);
-        if (list && Array.isArray(list)) {
-          setTimeout(() => {            
-            const win = list[Math.floor(Math.random() * list.length)];
-            let indexWin = contextValue.list?.indexOf(win) ?? -1;
+  const [win, setWin] = useState('')
+  const [loading, setLoading] = useState(false)
 
-            const newList = [...(contextValue.list as string[])];
-            newList.splice(indexWin, 1);
-            setList(newList);
-            setWin(win);
-            setLoading(false);
-            confetti({
-              zIndex: 999,
-              particleCount: 100,
-              spread: 160,
-              angle: -100,
-              origin: {
-                x: 0.5,
-                y: 0,
-              },
-            });
-          }, 3000);
-        }
-      };
+  const winner = () => {
+    setLoading(true)
+    if (list && Array.isArray(list)) {
+      setTimeout(() => {
+        const win = list[Math.floor(Math.random() * list.length)]
+        const indexWin = contextValue.list?.indexOf(win) ?? -1
+        confetties()
 
-      const disabled = (!!contextValue.list?.length) ? false : true;
-    
-      const onPressHandler = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        const value = (event.target as HTMLFormElement).list.value;
-        value && setList(value.split(","));
-      }
-    
-    
-      return (
-        <>
-            <StateContext.Provider value={contextValue}>
-          <h1 className="text-3xl font-bold underline text-center fade-in py-4">Random Winner</h1>
-          <ListNames />
-          <div className="float-none"></div>
-          { !loading && win && <Winner winName={win} />}
-          { loading && 
-            <div className="flex justify-center items-center h-12 pb-2">
-              <div className="rounded-full h-1/2 w-20 bg-violet-800 animate-ping"></div>
-            </div>
-          }
-          <div className="text-center">
-            <form onSubmit={onPressHandler}>
-              <input 
-                name='list' 
-                className="
+        const newList = [...(contextValue.list as string[])]
+        newList.splice(indexWin, 1)
+        setList(newList)
+        setWin(win)
+        setLoading(false)
+      }, 3000)
+    }
+  }
+
+  const disabled = contextValue.list?.length ? false : true
+
+  const onPressHandler = (
+    event: React.FormEvent<HTMLFormElement>,
+  ) => {
+    event.preventDefault()
+    const value = (event.target as HTMLFormElement).list.value
+    value && setList(updateList(value))
+  }
+
+  return (
+    <>
+      <StateContext.Provider value={contextValue}>
+        <h1 className="text-3xl font-bold underline text-center fade-in py-4">
+          Random Winner
+        </h1>
+        <ListNames />
+        <div className="float-none"></div>
+        {!loading && win && <Winner winName={win} />}
+        {loading && (
+          <div className="flex justify-center items-center h-12 pb-2">
+            <div className="rounded-full h-1/2 w-20 bg-violet-800 animate-ping"></div>
+          </div>
+        )}
+        <div className="text-center">
+          <form onSubmit={onPressHandler}>
+            <input
+              name="list"
+              className="
                   mr-4 
                   w-1/3 
                   border 
@@ -76,22 +74,25 @@ import confetti from "canvas-confetti";
                   focus:outline-none 
                   focus:border-indigo-300 
                   pl-4 
-                  h-10" 
-                placeholder="Enter names separated by commas and space"
-                />
-              <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-              >Send</button>
-            </form>
-            <br />
-              <button onClick={winner} disabled={disabled} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-              >Get Winner</button>
-          </div>
-         
-          <Footer />
-          </StateContext.Provider>
-        </>
-      )
-    }
-    export default RandomName
-    
-    
+                  h-10"
+              placeholder="Enter names separated by commas and space"
+            />
+            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+              Send
+            </button>
+          </form>
+          <br />
+          <button
+            onClick={winner}
+            disabled={disabled}
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Get Winner
+          </button>
+        </div>
+
+        <Footer />
+      </StateContext.Provider>
+    </>
+  )
+}
+export default RandomName
