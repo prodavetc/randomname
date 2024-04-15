@@ -3,7 +3,6 @@ import ListNames from './ListNames'
 import Winner from './Winner'
 import Footer from './Footer'
 import {StateContext} from '../hook/useContext/stateContext'
-// import confetti from "canvas-confetti";
 import {confetties, updateList} from '../utils'
 
 const RandomName = () => {
