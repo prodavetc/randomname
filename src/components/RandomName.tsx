@@ -3,8 +3,8 @@ import ListNames from './ListNames'
 import Winner from './Winner'
 import Footer from './Footer'
 import {StateContext} from '../hook/useContext/stateContext'
-// import confetti from "canvas-confetti";
 import {confetties, updateList} from '../utils'
+import StatCounter from '../utils/Statcounter'
 
 const RandomName = () => {
   const userList = useContext(StateContext)
@@ -92,6 +92,7 @@ const RandomName = () => {
 
         <Footer />
       </StateContext.Provider>
+      <StatCounter sc_project={12988526} sc_security="a618bf39" />
     </>
   )
 }

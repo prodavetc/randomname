@@ -1,3 +1,3 @@
 export const updateList = (value: string) => {
-  return value.split(",").filter(item => item !== "");
+  return value.split(',').filter((item) => item !== '')
 }

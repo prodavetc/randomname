@@ -1,8 +1,6 @@
-import confetti from 'canvas-confetti';
+import confetti from 'canvas-confetti'
 
 export const confetties = () => {
-
-
   return confetti({
     zIndex: 999,
     particleCount: 100,
@@ -12,5 +10,5 @@ export const confetties = () => {
       x: 0.5,
       y: 0,
     },
-  });
+  })
 }
