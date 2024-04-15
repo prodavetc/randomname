@@ -92,7 +92,6 @@ const RandomName = () => {
 
         <Footer />
       </StateContext.Provider>
-      <StatCounter sc_project={12988526} sc_security="a618bf39" />
     </>
   )
 }
