@@ -1,24 +1,36 @@
-import {useContext, useMemo, useState} from 'react'
+import { useContext, useMemo, useState, useEffect } from 'react'
 import ListNames from './ListNames'
 import Winner from './Winner'
 import Footer from './Footer'
-import {StateContext} from '../hook/useContext/stateContext'
-import {confetties, updateList} from '../utils'
+import { StateContext } from '../hook/useContext/stateContext'
+import { confetties, updateList } from '../utils'
 import StatCounter from '../utils/Statcounter'
 
 const RandomName = () => {
   const userList = useContext(StateContext)
 
   const [list, setList] = useState<string[] | string | undefined>(
-    userList?.list,
+    userList?.list
   )
   const contextValue = useMemo(
-    () => ({lenght: userList?.length || 0, list, setList}),
+    () => ({ length: userList?.length || 0, list, setList }),
     [list, userList?.length],
   )
 
   const [win, setWin] = useState('')
   const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    const storedList = localStorage.getItem('list')
+    if (storedList) {
+      try {
+        const parsedList = JSON.parse(storedList)
+        setList(parsedList)
+      } catch (e) {
+        console.error('Failed to parse list from localStorage', e)
+      }
+    }
+  }, [])
 
   const winner = () => {
     setLoading(true)
@@ -31,6 +43,7 @@ const RandomName = () => {
         const newList = [...(contextValue.list as string[])]
         newList.splice(indexWin, 1)
         setList(newList)
+        localStorage.setItem('list', JSON.stringify(newList))
         setWin(win)
         setLoading(false)
       }, 3000)
@@ -44,7 +57,11 @@ const RandomName = () => {
   ) => {
     event.preventDefault()
     const value = (event.target as HTMLFormElement).list.value
-    value && setList(updateList(value))
+    if (value) {
+      const updatedList = updateList(value)
+      localStorage.setItem('list', JSON.stringify(updatedList))
+      setList(updatedList)
+    }
   }
 
   return (
