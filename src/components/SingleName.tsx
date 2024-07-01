@@ -17,6 +17,7 @@ const SingleName = ({item, index}: SingleNameProps) => {
   const eliminarElemento = (index: number) => {
     const newList = [...(list as string[])]
     newList.splice(index, 1)
+    localStorage.setItem('list', JSON.stringify(newList))
     setList(newList)
   }
 
