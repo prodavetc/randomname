@@ -1,19 +1,19 @@
-import { useContext, useMemo, useState, useEffect } from 'react'
+import {useContext, useMemo, useState, useEffect} from 'react'
 import ListNames from './ListNames'
 import Winner from './Winner'
 import Footer from './Footer'
-import { StateContext } from '../hook/useContext/stateContext'
-import { confetties, updateList } from '../utils'
+import {StateContext} from '../hook/useContext/stateContext'
+import {confetties, updateList} from '../utils'
 import StatCounter from '../utils/Statcounter'
 
 const RandomName = () => {
   const userList = useContext(StateContext)
 
   const [list, setList] = useState<string[] | string | undefined>(
-    userList?.list
+    userList?.list,
   )
   const contextValue = useMemo(
-    () => ({ length: userList?.length || 0, list, setList }),
+    () => ({length: userList?.length || 0, list, setList}),
     [list, userList?.length],
   )
 
